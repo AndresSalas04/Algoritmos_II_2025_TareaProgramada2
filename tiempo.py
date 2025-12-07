@@ -7,48 +7,41 @@ Módulo para medir el tiempo de ejecución de algoritmos.
 import time
 from typing import Dict
 
-
 class MedidorTiempo:
-    """Clase para medir intervalos de tiempo de ejecución."""
-    
+    """
+    Medidor de tiempo usando perf_counter_ns().
+    """
     def __init__(self):
-        self.tiempo_inicial: float = 0.0
-        self.tiempo_final: float = 0.0
-    
-    def cargar_tiempo(self) -> None:
-        """Guarda el tiempo actual como tiempo inicial."""
-        self.tiempo_inicial = time.perf_counter()
-    
-    def intervalo_tiempo(self) -> Dict[str, int]:
+        """Inicializa el atributo que almacena el tiempo de inicio."""
+        self.inicio_ns = 0
+
+    def cargar_tiempo(self):
         """
-        Calcula el intervalo de tiempo transcurrido.
-        
-        Returns:
-            Diccionario con horas, minutos, segundos y centésimas
+        Guarda el tiempo actual como tiempo de inicio.
         """
-        self.tiempo_final = time.perf_counter()
-        intervalo = self.tiempo_final - self.tiempo_inicial
-        
-        horas = int(intervalo // 3600)
-        minutos = int((intervalo % 3600) // 60)
-        segundos = int(intervalo % 60)
-        centesimas = int((intervalo % 1) * 100)
-        
+        self.inicio_ns = time.perf_counter_ns()
+
+    def intervalo_tiempo(self) -> Dict[str, float]:
+        """
+        Calcula el intervalo de tiempo desde cargar_tiempo() hasta ahora.
+
+        Returns: un valor flotante que representa el tiempo en milisegundos
+        """
+
+        fin = time.perf_counter_ns()
+        ns = fin - self.inicio_ns
+
+        #Para que salga en ms
+        ms = ns / 1_000_000 
+
         return {
-            'horas': horas,
-            'minutos': minutos,
-            'segundos': segundos,
-            'centesimas': centesimas
+            'ms': ms
         }
-    
-    def formato_tiempo(self, tiempo: Dict[str, int]) -> str:
+
+    def formato_tiempo(self, tiempo: Dict[str, float]) -> str:
         """
-        Formatea el tiempo en una cadena legible.
-        
-        Args:
-            tiempo: Diccionario con componentes del tiempo
-            
-        Returns:
-            String formateado como "HH:MM:SS,CC"
+        Convierte el tiempo calculado en una cadena legible.
+
+        Returns: str: Tiempo formateado con 3 decimales, en milisegundos.
         """
-        return f"{tiempo['horas']:02d}:{tiempo['minutos']:02d}:{tiempo['segundos']:02d},{tiempo['centesimas']:02d}"
+        return f"{tiempo['ms']:.3f} ms"
