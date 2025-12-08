@@ -276,17 +276,40 @@ def demo_recursos():
     console.print(f"   Ganancia: [green]{solucion.ganancia}[/green]")
     console.print(f"   Soluciones exploradas: {solucion.soluciones_factibles}")
     console.print(f"   Tiempo: {timer.formato_tiempo(tiempo)}")
-
+    
 if __name__ == "__main__":
-    console.print(Panel.fit(
-        "[bold white]Demostración de Problemas Algorítmicos[/bold white]\n",
-        border_style="cyan",
-        box=box.DOUBLE
-    ))
-    
-    demo_asignacion()
-    demo_mochila()
-    demo_vendedor()
-    demo_recursos()
-    
-    console.print("\n\n[bold green]¡Demostración completada![/bold green]\n")
+    while True:
+        console.clear()
+        console.print(Panel.fit(
+            "[bold cyan]Demostración de Problemas Algorítmicos[/bold cyan]\n",
+            border_style="cyan",
+            box=box.DOUBLE
+        ))
+
+        console.print("\nSeleccione una demostración:\n", style="bold white")
+        console.print(" [1] Asignación 1 a 1")
+        console.print(" [2] Mochila 0/1")
+        console.print(" [3] Vendedor Viajero (TSP)")
+        console.print(" [4] Distribución de Recursos")
+        console.print(" [5] Salir\n")
+
+        opcion = console.input("[bold yellow]Digite una opción:[/bold yellow] ").strip()
+
+        if opcion == "1":
+            demo_asignacion()
+            console.input("\n[green]Presione ENTER para continuar[/green]")
+        elif opcion == "2":
+            demo_mochila()
+            console.input("\n[green]Presione ENTER para continuar[/green]")
+        elif opcion == "3":
+            demo_vendedor()
+            console.input("\n[green]Presione ENTER para continuar[/green]")
+        elif opcion == "4":
+            demo_recursos()
+            console.input("\n[green]Presione ENTER para continuar[/green]")
+        elif opcion == "5":
+            console.print("\n[bold green]¡Hasta luego![/bold green]\n")
+            break
+        else:
+            console.print("[red]Opción inválida. Intente de nuevo.[/red]")
+            console.input("\nPresione ENTER para continuar...")
